@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <title>tracemap - Visualize traceroute result on a map</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.1/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+    <style>
+        #map {
+            height: 620px;
+        }
+
+        #trace {
+            font-family: monospace;
+            height: 280px;
+        }
+
+        #route {
+            font-family: monospace;
+            border: 1px dashed #eee;
+            padding: 6px 12px;
+            height: 300px;
+            max-height: 300px;
+            overflow: scroll;
+        }
+
+        .footer {
+            padding-top: 10px;
+        }
+
+        .pin {
+            width: 30px;
+            height: 30px;
+            border-radius: 50% 50% 50% 0;
+            background: mediumpurple;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            margin: -20px 0 0 -20px;
+            font-size: 16px;
+            padding-left: 2px;
+            padding-top: 2px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container-fluid">
+    <h1>Tracemap
+        <small>visualize your traceroute output over the world</small>
+    </h1>
+    <div class="row">
+        <div id="app" class="col-md-4">
+            <h4>
+                <label for="trace">
+                    Traceroute output
+                </label>
+            </h4>
+            <textarea v-model="trace" id="trace" class="form-control" rows="12"></textarea>
+            <h4>Parsed route</h4>
+            <div id="route">
+                <template v-if="error">
+                    {{ message }}
+                    <br>
+                    Error details:
+                    <pre>{{ error }}</pre>
+                </template>
+                <p v-else v-for="node in route">
+                    {{ node.hop }}. {{ node.ip }} -
+                    <template v-if="node.ip_info.bogon"> bogon (e.g., local or private IPs)</template>
+                    <template v-if="node.ip_info.org">{{ node.ip_info.org }},</template>
+                    <template v-if="node.ip_info.city">{{ node.ip_info.city }},</template>
+                    <template v-if="node.ip_info.country">{{ node.ip_info.country }}</template>
+                </p>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <h4>Mapped route</h4>
+            <div id="map"></div>
+        </div>
+    </div>
+</div>
+
+<footer class="footer text-center">
+    <p class="text-muted">&copy; Binh Le, 2017. IP locations data is from <a href="ipinfo.io">ipinfo.io</a>.</p>
+</footer>
+
+<script src="https://unpkg.com/lodash@4.13.1/lodash.min.js"></script>
+<script src="https://unpkg.com/vue@2.1.8/dist/vue.js"></script>
+<script src="https://unpkg.com/axios@0.15.3/dist/axios.min.js"></script>
+<script src="https://unpkg.com/leaflet@1.0.1/dist/leaflet.js"></script>
+<script src="app.js"></script>
+</body>
