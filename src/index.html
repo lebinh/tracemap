@@ -57,7 +57,9 @@
                     Traceroute output
                 </label>
             </h4>
-            <textarea v-model="trace" id="trace" class="form-control" rows="12"></textarea>
+            <textarea v-model="trace" id="trace" class="form-control" rows="12"
+                      placeholder="Paste your `traceroute` command output here">
+            </textarea>
             <h4>Parsed route</h4>
             <div id="route">
                 <template v-if="error">
@@ -87,7 +89,7 @@
 </footer>
 
 <script src="https://unpkg.com/lodash@4.13.1/lodash.min.js"></script>
-<script src="https://unpkg.com/vue@2.1.8/dist/vue.js"></script>
+<script src="https://unpkg.com/vue@2.1.8/dist/vue.min.js"></script>
 <script src="https://unpkg.com/axios@0.15.3/dist/axios.min.js"></script>
 <script src="https://unpkg.com/leaflet@1.0.1/dist/leaflet.js"></script>
 <script src="app.js"></script>

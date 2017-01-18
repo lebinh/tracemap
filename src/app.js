@@ -27,7 +27,7 @@ var queryNode = function (node) {
 
 var map = L.map('map').fitWorld();
 var markersLayer = L.layerGroup().addTo(map);
-L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 18,
     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 }).addTo(map);
@@ -35,14 +35,15 @@ L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 var app = new Vue({
     el: '#app',
     data: {
-        message: '',
-        trace: '',
+        error: undefined,
+        message: undefined,
+        trace: undefined,
         route: []
     },
     watch: {
         trace: function(trace) {
             var app = this;
-            app.error = false;
+            app.error = undefined;
             var lines = _.split(trace, '\n');
             var route = _.compact(_.map(lines, parseLine));
             var mappedRoute = _.map(route, queryNode);
