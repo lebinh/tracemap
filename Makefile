@@ -1,8 +1,12 @@
-plan: html js site.tf
-	terraform plan --out=site.plan
+.PHONY: plan apply html js
 
-deploy: site.plan
-	terraform apply site.plan
+plan: terraform.plan
+
+terraform.plan: *.tf html js
+	terraform plan --out=terraform.plan
+
+apply: terraform.plan
+	terraform apply terraform.plan
 
 html: build/index.html.gz
 
@@ -18,3 +22,4 @@ build/app.js.gz: src/app.js
 
 clean:
 	rm -rf build
+
